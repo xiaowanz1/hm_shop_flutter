@@ -5,6 +5,7 @@ import 'package:hm_shop_flutter/components/Home/HmMoreList.dart';
 import 'package:hm_shop_flutter/components/Home/HmSlider.dart';
 import 'package:hm_shop_flutter/components/Home/HmSuggestion.dart';
 import 'package:hm_shop_flutter/pages/Category/index.dart';
+import 'package:hm_shop_flutter/viewmodels/home.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
@@ -14,11 +15,31 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  //可以从接口获取数据
+  //定义三条写死的轮播图数据传递给HmSlider()
+  //https://imgcps.jd.com/ling-cubic/turing/focusChannelPcText/eea59e1eed5dddbbe733f96d3045873d/cr/s/q70.png
+  final List<BannerItem> _bannerList = [
+  BannerItem(
+    id:"1",
+    imgUrl: "https://assets.699pic.com/public/web/images/604/752/155.jpg!list1x.v2",
+     ),
+     BannerItem(
+    id:"2",
+    imgUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT72ddbr5aE9lwOMRcqblNFDeXYQoOUwCv8a-xqqCItplqlq-farDaZMAi9&s=10",
+     ),
+     BannerItem(
+    id:"3",
+    imgUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStgDs03G44-DAzmyeiJJQ45KGifwllorGsgPAXrLoS9g&s",
+     ),
+  ];
+
+
+
   //获取滚动容器内容
   List<Widget> _getScrollChildren(){
     return [
       //包裹普通widget的sliver家族的组件
-      SliverToBoxAdapter(child: HmSlider(),), //轮播图组件
+      SliverToBoxAdapter(child: HmSlider(bannerList:_bannerList),), //轮播图组件
       //间距组件 
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
 

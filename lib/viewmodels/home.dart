@@ -51,14 +51,16 @@ class GoodsItem{
   String id;
   String name;
   String picture;
-  double price;
-  String desc;
+  String price;
+  String? desc;
+  int orderNum;
   GoodsItem({
     required this.id,
     required this.name,
     required this.picture,
     required this.price,
-    required this.desc
+     this.desc,
+     required this.orderNum
   });
   factory GoodsItem.fromJSON(Map<String,dynamic> json){
     //必须返回一个GoodsItem对象
@@ -66,8 +68,9 @@ class GoodsItem{
       id:json["id"]?.toString() ?? "",
       name: json["name"]?.toString() ?? "",
       picture: json["picture"]?.toString() ?? "",
-      price: double.parse(json["price"]) ?? 0.0,
-      desc: json["desc"]?.toString() ?? ""
+      price: json["price"]?.toString() ?? "",
+      desc: json["desc"]?.toString() ?? "",
+      orderNum: int.tryParse(json["orderNum"]?.toString() ?? "0") ?? 0,
     );
   }
 }
@@ -145,4 +148,30 @@ class SpecoalRecommendResult {
       );
   }
 
+}
+
+// 推荐
+class GoodDetailItem extends GoodsItem {
+  int payCount = 0;
+
+  /// 商品详情项,不会继承构造函数
+  GoodDetailItem({
+    required super.id,
+    required super.name,
+    required super.price,
+    required super.picture,
+    required super.orderNum,
+    required this.payCount,
+  }) : super(desc: "");
+  // 转化方法
+  factory GoodDetailItem.formJSON(Map<String, dynamic> json) {
+    return GoodDetailItem(
+      id: json["id"]?.toString() ?? "",
+      name: json["name"]?.toString() ?? "",
+      price: json["price"]?.toString() ?? "",
+      picture: json["picture"]?.toString() ?? "",
+      orderNum: int.tryParse(json["orderNum"]?.toString() ?? "0") ?? 0,
+      payCount: int.tryParse(json["payCount"]?.toString() ?? "0") ?? 0,
+    );
+  }
 }

@@ -36,7 +36,10 @@ class _HomeViewState extends State<HomeView> {
     title: "",
     subTypes: [],
   );
+// 推荐列表
+  List<GoodDetailItem> _recommendList = [];
 
+  
 
 
   //可以从接口获取数据
@@ -96,7 +99,7 @@ class _HomeViewState extends State<HomeView> {
       //间距组件 
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
       // 无限列表
-      HmMoreList()
+      HmMoreList(recommendList: _recommendList), // 无限滚动列表
     ];
   }
   @override
@@ -108,6 +111,7 @@ class _HomeViewState extends State<HomeView> {
     _getSpecialRecommendList();
     _getInVogueList();
     _getOneStopList();
+    _getRecommendList();
   }
 
   //获取轮播图数据
@@ -136,6 +140,13 @@ class _HomeViewState extends State<HomeView> {
     _oneStopResult = await getOneStopListAPI();
     setState(() {});
   }
+
+  // 获取推荐列表
+  void _getRecommendList() async {
+    _recommendList = await getRecommendListAPI({"limit": 10});
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: _getScrollChildren(),); //sliver家族的内容

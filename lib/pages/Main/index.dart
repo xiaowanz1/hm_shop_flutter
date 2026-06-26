@@ -55,7 +55,7 @@ class _MainPageState extends State<MainPage> {
       HomeView(),
       CartView(),
       CategoryView(),
-      MyView()
+      MineView()
     ];
   }
   @override

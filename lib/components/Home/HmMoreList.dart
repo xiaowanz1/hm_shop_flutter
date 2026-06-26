@@ -18,7 +18,8 @@ class _HmMoreListState extends State<HmMoreList> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: AspectRatio( // 宽高比为1 ，正方形
+            child: AspectRatio(
+              // 宽高比为1 ，正方形
               aspectRatio: 1.0,
               child: Image.network(
                 widget.recommendList[index].picture,
@@ -92,7 +93,7 @@ class _HmMoreListState extends State<HmMoreList> {
             crossAxisCount: 2,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
-            childAspectRatio: 0.72,
+            childAspectRatio: 0.68,
           ),
       itemBuilder: (BuildContext context, int index) {
         return Padding(

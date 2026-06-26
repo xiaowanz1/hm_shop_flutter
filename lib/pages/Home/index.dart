@@ -24,6 +24,20 @@ class _HomeViewState extends State<HomeView> {
     title:"",
     subTypes: [],
   );
+  // 热榜推荐
+  SpecoalRecommendResult _inVogueResult = SpecoalRecommendResult(
+    id: "",
+    title: "",
+    subTypes: [],
+  );
+  // 一站式推荐
+  SpecoalRecommendResult _oneStopResult = SpecoalRecommendResult(
+    id: "",
+    title: "",
+    subTypes: [],
+  );
+
+
 
   //可以从接口获取数据
   //定义三条写死的轮播图数据传递给HmSlider()
@@ -68,9 +82,13 @@ class _HomeViewState extends State<HomeView> {
         child:Flex(
         direction: Axis.horizontal,
         children: [
-          Expanded(child: HmHot()),
-          SizedBox(width: 10,), 
-          Expanded(child: HmHot()),
+          Expanded(
+                child: HmHot(result: _inVogueResult, type: "hot"),
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: HmHot(result: _oneStopResult, type: "step"),
+              ),
           ],
       ))),
 
@@ -88,6 +106,8 @@ class _HomeViewState extends State<HomeView> {
     _getBannerList();
     _getCategoryList();
     _getSpecialRecommendList();
+    _getInVogueList();
+    _getOneStopList();
   }
 
   //获取轮播图数据
@@ -103,6 +123,17 @@ class _HomeViewState extends State<HomeView> {
   //获取特惠推荐数据
   void _getSpecialRecommendList()async{
     _specialRecommendResult =  await getProductListAPI();
+    setState(() {});
+  }
+    // 获取热榜推荐列表
+  void _getInVogueList() async {
+    _inVogueResult = await getInVogueListAPI();
+    setState(() {});
+  }
+
+  // 获取一站式推荐列表
+  void _getOneStopList() async {
+    _oneStopResult = await getOneStopListAPI();
     setState(() {});
   }
   @override

@@ -29,4 +29,19 @@ Future<SpecoalRecommendResult> getProductListAPI() async{
  );
 }
 
+// 热榜推荐
+Future<SpecoalRecommendResult> getInVogueListAPI() async {
+  // 返回请求
+  return SpecoalRecommendResult.fromJSON(
+    await dioRequest.get(HttpConstants.IN_VOGUE_LIST),
+  );
+}
+
+// 一站式推荐
+Future<SpecoalRecommendResult> getOneStopListAPI() async {
+  // 返回请求
+  return SpecoalRecommendResult.fromJSON(
+    await dioRequest.get(HttpConstants.ONE_STOP_LIST),
+  );
+}
 

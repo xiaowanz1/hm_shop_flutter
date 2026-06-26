@@ -20,3 +20,13 @@ Future<List<CategoryItem>> getCategoryListAPI() async{
   }).toList();
   return tt;
 }
+
+// 特惠推荐--返回的是对象
+Future<SpecoalRecommendResult> getProductListAPI() async{
+  //返回请求
+ return SpecoalRecommendResult.fromJSON(
+   await dioRequest.get(HttpConstants.PRODUCT_LIST)
+ );
+}
+
+

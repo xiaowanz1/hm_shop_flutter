@@ -18,6 +18,12 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   // 分类列表
   List<CategoryItem> _categoryList = [];
+  // 特惠推荐
+  SpecoalRecommendResult _specialRecommendResult = SpecoalRecommendResult(
+    id:"",
+    title:"",
+    subTypes: [],
+  );
 
   //可以从接口获取数据
   //定义三条写死的轮播图数据传递给HmSlider()
@@ -52,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: HmCategory(categoryList:_categoryList),),  // 分类组件，横向滑动
 //间距组件 
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
-      SliverToBoxAdapter(child: Hmsuggestion(),), //推荐
+      SliverToBoxAdapter(child: Hmsuggestion(specialRecommendResult:_specialRecommendResult),), //推荐
       //间距组件 
       SliverToBoxAdapter(child: SizedBox(height: 10,),),
 
@@ -81,6 +87,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     _getBannerList();
     _getCategoryList();
+    _getSpecialRecommendList();
   }
 
   //获取轮播图数据
@@ -91,6 +98,11 @@ class _HomeViewState extends State<HomeView> {
   //获取分类列表数据
   void _getCategoryList()async{
     _categoryList =  await getCategoryListAPI();
+    setState(() {});
+  }
+  //获取特惠推荐数据
+  void _getSpecialRecommendList()async{
+    _specialRecommendResult =  await getProductListAPI();
     setState(() {});
   }
   @override

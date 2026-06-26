@@ -1,9 +1,10 @@
 import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hm_shop_flutter/api/user.dart';
+import 'package:hm_shop_flutter/stores/UserController.dart';
 import 'package:hm_shop_flutter/utils/Toastutils.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -15,6 +16,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _phoneController = TextEditingController(); //账号控制器
   TextEditingController _codeController = TextEditingController(); //密码控制器
+  //共享用户数据
+  final Usercontroller _usercontroller = Get.find();
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _codeController.dispose();
+    super.dispose();
+  }
 
   // 用户账号widget
   Widget _buildPhoneTextField() {
@@ -80,6 +90,8 @@ class _LoginPageState extends State<LoginPage> {
         "account": _phoneController.text,
         "password": _codeController.text,
       });
+      //更新用户信息
+      _usercontroller.updateUserInfo(res);
       //此时一定登录成功
       // http状态码2xx； 业务状态码--业务执行成功 1
       ToastUtils.showToast(context, "登录成功");

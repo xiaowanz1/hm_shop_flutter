@@ -66,7 +66,7 @@ class _HmSliderState extends State<HmSlider> {
       );
   }
 
-
+//指示灯
   Widget _getDots(){
     return Positioned(
       left: 0,

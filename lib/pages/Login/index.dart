@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hm_shop_flutter/api/user.dart';
 import 'package:hm_shop_flutter/stores/TokenManager.dart';
 import 'package:hm_shop_flutter/stores/UserController.dart';
+import 'package:hm_shop_flutter/utils/LoadingDialog.dart';
 import 'package:hm_shop_flutter/utils/Toastutils.dart';
 import 'package:get/get.dart';
 
@@ -87,6 +88,8 @@ class _LoginPageState extends State<LoginPage> {
   //调用登录接口
   _login() async {
     try {
+      //加载中的弹框
+      Loadingdialog.show(context, message: "努力登录中");
       final res = await loginAPI({
         "account": _phoneController.text,
         "password": _codeController.text,
@@ -97,11 +100,13 @@ class _LoginPageState extends State<LoginPage> {
       // http状态码2xx； 业务状态码--业务执行成功 1
       // 把token持久化
       tokenManager.setToken(res.token);
+      Loadingdialog.hide(context);
       ToastUtils.showToast(context, "登录成功");
       Timer(Duration(milliseconds: 350), () {
         if (mounted) Navigator.pop(context); //直接返回上一页
       });
     } catch (e) {
+      Loadingdialog.hide(context);
       ToastUtils.showToast(context, (e as DioException).message);
     }
   }

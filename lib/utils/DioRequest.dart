@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:hm_shop_flutter/constants/index.dart';
+import 'package:hm_shop_flutter/stores/TokenManager.dart';
 
 class Diorequest {
   final _dio = Dio(); //Dio请求对象
@@ -19,6 +20,12 @@ class Diorequest {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (request, handler) {
+          //注入token 请求头中的Authorization = "Bearer token"
+          if(tokenManager.getToken().isNotEmpty){
+            request.headers = {
+              "Authorization":"Bearer ${tokenManager.getToken()}"
+            };
+          }
           handler.next(request);
         },
         onResponse: (response, handler) {

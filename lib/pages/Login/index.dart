@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hm_shop_flutter/api/user.dart';
+import 'package:hm_shop_flutter/stores/TokenManager.dart';
 import 'package:hm_shop_flutter/stores/UserController.dart';
 import 'package:hm_shop_flutter/utils/Toastutils.dart';
 import 'package:get/get.dart';
@@ -94,6 +95,8 @@ class _LoginPageState extends State<LoginPage> {
       _usercontroller.updateUserInfo(res);
       //此时一定登录成功
       // http状态码2xx； 业务状态码--业务执行成功 1
+      // 把token持久化
+      tokenManager.setToken(res.token);
       ToastUtils.showToast(context, "登录成功");
       Timer(Duration(milliseconds: 350), () {
         if (mounted) Navigator.pop(context); //直接返回上一页

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hm_shop_flutter/api/user.dart';
 import 'package:hm_shop_flutter/pages/Cart/index.dart';
 import 'package:hm_shop_flutter/pages/Category/index.dart';
 import 'package:hm_shop_flutter/pages/Home/index.dart';
 import 'package:hm_shop_flutter/pages/My/index.dart';
+import 'package:hm_shop_flutter/stores/TokenManager.dart';
+import 'package:hm_shop_flutter/stores/UserController.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -14,58 +18,76 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   //定义数据 根据数据进行渲染4个导航
   //一般应用程序的导航是固定不变的
-  final List<Map<String,String>> _tableList = [
+  final List<Map<String, String>> _tableList = [
     {
-      "icon":"lib/assets/ic_public_home_normal.png", //正常显示的图标
-      "active_icon":"lib/assets/ic_public_home_active.png",//激活状态显示的图片
-      "text":'首页'
+      "icon": "lib/assets/ic_public_home_normal.png", //正常显示的图标
+      "active_icon": "lib/assets/ic_public_home_active.png", //激活状态显示的图片
+      "text": '首页',
     },
-     {
-      "icon":"lib/assets/ic_public_pro_normal.png", //正常显示的图标
-      "active_icon":"lib/assets/ic_public_pro_active.png",//激活状态显示的图片
-      "text":'分类'
+    {
+      "icon": "lib/assets/ic_public_pro_normal.png", //正常显示的图标
+      "active_icon": "lib/assets/ic_public_pro_active.png", //激活状态显示的图片
+      "text": '分类',
     },
-     {
-      "icon":"lib/assets/ic_public_cart_normal.png", //正常显示的图标
-      "active_icon":"lib/assets/ic_public_cart_active.png",//激活状态显示的图片
-      "text":'购物车'
+    {
+      "icon": "lib/assets/ic_public_cart_normal.png", //正常显示的图标
+      "active_icon": "lib/assets/ic_public_cart_active.png", //激活状态显示的图片
+      "text": '购物车',
     },
-     {
-      "icon":"lib/assets/ic_public_my_normal.png", //正常显示的图标
-      "active_icon":"lib/assets/ic_public_my_active.png",//激活状态显示的图片
-      "text":'我的'
+    {
+      "icon": "lib/assets/ic_public_my_normal.png", //正常显示的图标
+      "active_icon": "lib/assets/ic_public_my_active.png", //激活状态显示的图片
+      "text": '我的',
     },
   ];
 
   int _currentIndex = 0;
 
-// 返回底部渲染的四个分类
-  List<BottomNavigationBarItem> _getTabBarWidget(){
-    return List.generate(_tableList.length, (int index){
+  // 返回底部渲染的四个分类
+  List<BottomNavigationBarItem> _getTabBarWidget() {
+    return List.generate(_tableList.length, (int index) {
       return BottomNavigationBarItem(
-        icon: Image.asset(_tableList[index]["icon"]!, width: 30,height: 30),
-        activeIcon:Image.asset(_tableList[index]["active_icon"]!, width: 30,height: 30),
+        icon: Image.asset(_tableList[index]["icon"]!, width: 30, height: 30),
+        activeIcon: Image.asset(
+          _tableList[index]["active_icon"]!,
+          width: 30,
+          height: 30,
+        ),
         label: _tableList[index]["text"],
       );
     });
   }
 
-  List<Widget> _getChildren(){
-    return [
-      HomeView(),
-      CartView(),
-      CategoryView(),
-      MineView()
-    ];
+  List<Widget> _getChildren() {
+    return [HomeView(), CartView(), CategoryView(), MineView()];
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //初始化用户信息
+    _initUser();
+  }
+
+  //在首页判断token 获取状态赋值给Getx
+  final Usercontroller _usercontroller = Get.put(Usercontroller());
+  _initUser() async {
+    //初始化token
+    await tokenManager.init();
+    if (tokenManager.getToken().isNotEmpty) {
+      //如果有token就获取用户信息
+      _usercontroller.updateUserInfo(await getUserInfoAPI());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //SafeArea避开安全区组件 适配
-      body: SafeArea(child: IndexedStack(
-        index: _currentIndex,
-        children: _getChildren(),
-      )),
+      body: SafeArea(
+        child: IndexedStack(index: _currentIndex, children: _getChildren()),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
@@ -76,8 +98,8 @@ class _MainPageState extends State<MainPage> {
           _currentIndex = index;
           setState(() {});
         },
-        currentIndex : _currentIndex,
-        ),
+        currentIndex: _currentIndex,
+      ),
     );
   }
 }

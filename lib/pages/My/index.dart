@@ -15,7 +15,7 @@ class MineView extends StatefulWidget {
 
 class _MineViewState extends State<MineView> {
   //共享数据
-  final Usercontroller _userController = Get.put(Usercontroller());
+  final Usercontroller _userController = Get.find();
 
   Widget _buildHeader() {
     return Container(
